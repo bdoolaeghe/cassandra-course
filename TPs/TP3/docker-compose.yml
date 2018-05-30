@@ -5,38 +5,40 @@ version: '2'
 services:
   cassandra-node-0:
     container_name: cassandra-node-0
-    image: cassandra:3.11.0
+    image: cassandra:3.11.2
     ports:
       - "9042:9042"   # Native transport
       - "7199:7199"   # JMX
       - "9160:9160"   # Thrift clients
     volumes:
-        - ../../TPs:/TPs
+      - ../../TPs:/TPs
     environment:
-       - "JVM_OPTS=-Xmx512m -Xms256m"
+      # every node is seed to avoid 30s wait when joining ring
+      - "CASSANDRA_SEEDS=cassandra-node-0,cassandra-node-1,cassandra-node-2"
+      - "JVM_OPTS=-Xmx512m -Xms256m"
 
   cassandra-node-1:
     container_name: cassandra-node-1
-    image: cassandra:3.11.0
-    command: /bin/bash -c "echo 'Waiting for node 0 (seed)' && sleep 15 && /docker-entrypoint.sh cassandra -f"
+    image: cassandra:3.11.2
+    # command: /bin/bash -c "echo 'Waiting for node 0 (seed)' && sleep 30  && /docker-entrypoint.sh cassandra -f"
     volumes:
-        - ../../TPs:/TPs
+      - ../../TPs:/TPs
     environment:
-      - "CASSANDRA_SEEDS=cassandra-node-0"
+      - "CASSANDRA_SEEDS=cassandra-node-0,cassandra-node-1,cassandra-node-2"
       - "JVM_OPTS=-Xmx512m -Xms256m"
-    depends_on:
-      - "cassandra-node-0"
+    # depends_on:
+    #   - "cassandra-node-0"
 
   # you cannot have multiple nodes join the cluster at the same time when
   # cassandra.consistent.rangemovement is true so we further delay it to give it time to stabilize
   cassandra-node-2:
     container_name: cassandra-node-2
-    image: cassandra:3.11.0
-    command: /bin/bash -c "echo 'Waiting for node 0 (seed)' && sleep 40 && /docker-entrypoint.sh cassandra -f"
+    image: cassandra:3.11.2
+    # command: /bin/bash -c "echo 'Waiting for node 0 (seed)' && sleep 60 && /docker-entrypoint.sh cassandra -f"
     volumes:
-        - ../../TPs:/TPs
+      - ../../TPs:/TPs
     environment:
-      - "CASSANDRA_SEEDS=cassandra-node-0"
+      - "CASSANDRA_SEEDS=cassandra-node-0,cassandra-node-1,cassandra-node-2"
       - "JVM_OPTS=-Xmx512m -Xms256m"
-    depends_on:
-      - "cassandra-node-0"
+    # depends_on:
+    #   - "cassandra-node-0"

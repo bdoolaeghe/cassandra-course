@@ -33,21 +33,20 @@ _NB: you can check logs with:_
 ```
 docker-compose logs -f
 ```
-Once the cluster is up, you should [see the 3 connected containers on weave scope](http://localhost:4040).
+Once the cluster is up, you should [see the 3 connected containers on weave scope](http://localhost:4040). Now, you'll need in the next steps to open a terminal on node containers (click on a node to select) and execute a cqlsh with button ">\_" (Execute shell). For convinience, the TPs sources are mounted in _/TPs/_ in each node container. 
 
-
-
-### Create keyspace, table, and insert data
-
-With [scope](http://localhost:4040), open a terminal on one of the 3 cassandra node containers _(e.g. cassandra-node-0)_. For convinience, the TPs sources are mounted in _/TPs/_ in each docker.
-```
-cqlsh -f /TPs/TP1/create_keyspace.cql
-cqlsh -f /TPs/TP1/create_table_temperature_by_city.cql
-cqlsh -f /TPs/TP1/insert_dataset_for_temperature_by_city.cql
-```
 
 TP3.1) Masterless architecture
 ------------------------------
+*~~Scenario:~~ experiment the serverless architecture, and connect from any node*
+
+Create a keyspace 
+```
+cqlsh> SOURCE '/TPs/TP1/create_keyspace.cql'
+cqlsh> USE my_keyspace;
+cqlsh:my_keyspace_rf2> SOURCE '/TPs/TP1/create_table_temperature_by_city.cql'
+cqlsh:my_keyspace_rf2> SOURCE '/TPs/TP1/insert_dataset_for_temperature_by_city.cql'
+```
 
 Let's try to query from each node: if you open a cqlsh from any cassandra node _(cassandra-node-0, cassandra-node-1, cassandra-node-2)_, you should be able to read the same inserted data:
 ```
@@ -65,6 +64,8 @@ cqlsh:my_keyspace> select count(*) from temperature_by_city ;
 
 TP3.2) Data availability
 ------------------------
+*~~Scenario:~~ play with data replication*
+
 ### Cluster with no replication
 
 The keyspace we created has been setup with a replication factor set to 1 (i.e. no replicatoin). 
@@ -75,7 +76,7 @@ Let's suppose one node is fallen...
 ```
 docker stop cassandra-node-2 
 ```
-_NB: You can see on [scope](http://localhost:4040) the last node has disappeared._
+_NB: You can also stop a node with "square" (stop) button on [scope](http://localhost:4040). Then, you should see the last node has disappeared._
 
 * Open a cqlsh from cassandra-node-1 (in [scope](http://localhost:4040)) , and query the data from 'paris': 
 ```
@@ -91,16 +92,19 @@ What's happening ?
 *The partition for 'berlin' can't be queried, because the node hosting the data is fallen. With no replication, when a node is lost, some data is unavailable.*
 
 ### Cluster with replication (RF=2)
-Now, let's have some data replication. 
+*~~Scenario:~~ use replication factor (RF) and consistency level (CL)*
+
+Let's now have some data replication. 
 
 * From any node create a new *my_keyspace_rf2* keyspace with replication (RF=2):
 ```
-cqlsh -f /TPs/TP3/create_keyspace_rf2.cql
-cqlsh -f /TPs/TP1/create_table_temperature_by_city.cql
-cqlsh -f /TPs/TP1/insert_dataset_for_temperature_by_city.cql
+cqlsh> SOURCE '/TPs/TP3/create_keyspace_rf2.cql'
+cqlsh> USE my_keyspace_rf2;
+cqlsh> SOURCE '/TPs/TP1/create_table_temperature_by_city.cql'
+cqlsh> SOURCE '/TPs/TP1/insert_dataset_for_temperature_by_city.cql'
 ```
 
-* Agin, shutdown a node, and query the data from 'paris' and 'berlin' as we did [with no replication](#user-content-cluster-with-no-replication). Conclusion ?
+* Again, shutdown a node, and query the data from 'paris' and 'berlin' as we earlier did [with no replication](#user-content-cluster-with-no-replication). Conclusion ?
 
 *Thanks to replication, when a node is fallen, we can 
 still get the data from a replica.*
@@ -113,9 +117,10 @@ cqlsh:my_keyspace_rf2> CONSISTENCY;
 Current consistency level is ONE.
 ```
 
-Shutdown cassandra-node-2:
+Start up the clister but cassandra-node-2:
 ```
-docker stop cassandra-node-2 
+docker-compose stop
+docker-compose up -d cassandra-node-0 cassandra-node-1
 ```
 
 Query the number of temperatures in CL=ALL:
@@ -141,3 +146,80 @@ cqlsh:my_keyspace_rf2> SELECT count(*) from temperature_by_city ;
 (1 rows)
 ```
 *As you can see, when a node is fallen, the client applicatin may accept to downgrade the consistency level to make the data available (but maybe not the last  version !)*
+
+TP3.3) Fail over
+----------------
+*~~Scenario:~~ try the cassandra data "resynchronizatoin" mecanisms after a node failure*
+
+Let's hava a look to the different "repair" mecanism after desynchronization of cassandra nodes...
+
+Start up a 3-node-cluster:
+```
+docker-compose stop
+docker-compose up -d
+```
+
+To setup a proper context for following scenarios, let's create a keyspace with RF=3 *(my_keyspace_rf3)*, and insert data:
+```
+cqlsh> SOURCE '/TPs/TP3/create_keyspace_rf3.cql';
+cqlsh> USE my_keyspace_rf3;
+cqlsh:my_keyspace_rf3> SOURCE '/TPs/TP1/create_table_temperature_by_city.cql'
+cqlsh:my_keyspace_rf3> SOURCE '/TPs/TP1/insert_dataset_for_temperature_by_city.cql'
+```
+
+
+### hinted handoff
+*~~Scenario~~: write in CL=ALL with one fallen node. When the fallen node comes back in the ring, the coordinator should notify it to resynchronize (hinted handoff)*
+
+Shutdown cassandra-node-2:
+```
+docker-compose stop cassandra-node-2
+```
+Open a cqlsh on node-1, and insert data for Madrid:
+```
+cqlsh:> USE my_keyspace_rf3;
+cqlsh:my_keyspace_rf3> INSERT INTO temperature_by_city (city, date, temperature) VALUES ('madrid', '2017-01-01', 10);
+```
+
+Now, shutdown node-0 and node-1 and then startup node-2 only:
+```
+docker-compose stop
+docker-compose start cassandra-node-2
+```
+Open a cqlsh on node-2, and read data for Madrid:
+```
+cqlsh:> USE my_keyspace_rf3;
+cqlsh:my_keyspace_rf3> SELECT * from temperature_by_city where city = 'madrid' ;
+
+ city | date | temperature
+------+------+-------------
+
+(0 rows)
+```
+*As expected, cassandra-node-2 is desynchronized*
+
+Now, restart the whole cluster:
+```
+docker-compose up -d
+```
+*We expect the coordinator node (cassandra-node-1) has so notified cassandra-node-2 of missed Madrid row*
+
+Shutdown node-0 and node-1:
+```
+docker-compose stop cassandra-node-0 cassandra-node-1
+```
+Request Madrid data onto node-2:
+```
+cqlsh:my_keyspace_rf3> SELECT * from temperature_by_city where city = 'madrid';
+
+ city   | date       | temperature
+--------+------------+-------------
+ madrid | 2017-01-01 |          10
+
+(1 rows)
+```
+*As you can see, the madrid row has been resynchronized on cassandra-node-2 ! (hinted handoff)*
+
+### read repair
+
+### anti antropy
