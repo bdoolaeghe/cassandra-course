@@ -16,6 +16,9 @@ services:
       # every node is seed to avoid 30s wait when joining ring
       - "CASSANDRA_SEEDS=cassandra-node-0,cassandra-node-1,cassandra-node-2"
       - "JVM_OPTS=-Xmx512m -Xms256m"
+      - "MAX_HEAP_SIZE=512m"
+      - "HEAP_NEWSIZE=512m"
+
 
   cassandra-node-1:
     container_name: cassandra-node-1
@@ -26,6 +29,8 @@ services:
     environment:
       - "CASSANDRA_SEEDS=cassandra-node-0,cassandra-node-1,cassandra-node-2"
       - "JVM_OPTS=-Xmx512m -Xms256m"
+      - "MAX_HEAP_SIZE=512m"
+      - "HEAP_NEWSIZE=512m"
     # depends_on:
     #   - "cassandra-node-0"
 
@@ -40,5 +45,9 @@ services:
     environment:
       - "CASSANDRA_SEEDS=cassandra-node-0,cassandra-node-1,cassandra-node-2"
       - "JVM_OPTS=-Xmx512m -Xms256m"
+      - "MAX_HEAP_SIZE=512m"
+      - "HEAP_NEWSIZE=512m"
+
+
     # depends_on:
     #   - "cassandra-node-0"

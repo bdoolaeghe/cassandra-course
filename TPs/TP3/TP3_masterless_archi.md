@@ -149,7 +149,7 @@ cqlsh:my_keyspace_rf2> SELECT count(*) from temperature_by_city ;
 ```
 *As you can see, when a node is fallen, the client applicatin may accept to downgrade the consistency level to make the data available (but maybe not the last  version !)*
 
-TP3.4) Fail over
+TP3.3) Fail over
 ----------------
 ***Scenario***: *try the cassandra data "resynchronizatoin" mecanisms after a node failure*
 
