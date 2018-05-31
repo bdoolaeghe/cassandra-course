@@ -9,9 +9,9 @@ Training
  * [TPs/TP3/TP3.2_data_availability.md](TPs/TP3/TP3.2_data_availability.md)
  * [TPs/TP3/TP3.3_tunable_consistency.md](TPs/TP3/TP3.3_tunable_consistency.md)
  * [TPs/TP3/TP3.4_fail_over.md](TPs/TP3/TP3.4_fail_over.md)
-  * [TPs/TP3/TP3.4_hinted_handoff.md](TPs/TP3/TP3.4_hinted_handoff.md)
-  * [TPs/TP3/TP3.4_read_repair.md](TPs/TP3/TP3.4_read_repair.md)
-  * [TPs/TP3/TP3.4_nodetool_repair.md](TPs/TP3/TP3.4_nodetool_repair.md)
+   * [TPs/TP3/TP3.4_hinted_handoff.md](TPs/TP3/TP3.4_hinted_handoff.md)
+   * [TPs/TP3/TP3.4_read_repair.md](TPs/TP3/TP3.4_read_repair.md)
+   * [TPs/TP3/TP3.4_nodetool_repair.md](TPs/TP3/TP3.4_nodetool_repair.md)
 
 FAQ
 ===
