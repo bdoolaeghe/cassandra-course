@@ -38,7 +38,7 @@ Once the cluster is up, you should [see the 3 connected containers on weave scop
 
 TP3.1) Masterless architecture
 ------------------------------
-*~~Scenario:~~ experiment the serverless architecture, and connect from any node*
+***Scenario***: *experiment the serverless architecture, and connect from any node*
 
 Create a keyspace 
 ```
@@ -64,7 +64,7 @@ cqlsh:my_keyspace> select count(*) from temperature_by_city ;
 
 TP3.2) Data availability
 ------------------------
-*~~Scenario:~~ play with data replication*
+***Scenario***: *play with data replication*
 
 ### Cluster with no replication
 
@@ -92,7 +92,7 @@ What's happening ?
 *The partition for 'berlin' can't be queried, because the node hosting the data is fallen. With no replication, when a node is lost, some data is unavailable.*
 
 ### Cluster with replication (RF=2)
-*~~Scenario:~~ use replication factor (RF) and consistency level (CL)*
+***Scenario***: *use replication factor (RF) and consistency level (CL)*
 
 Let's now have some data replication. 
 
@@ -149,7 +149,7 @@ cqlsh:my_keyspace_rf2> SELECT count(*) from temperature_by_city ;
 
 TP3.3) Fail over
 ----------------
-*~~Scenario:~~ try the cassandra data "resynchronizatoin" mecanisms after a node failure*
+***Scenario***: *try the cassandra data "resynchronizatoin" mecanisms after a node failure*
 
 Let's hava a look to the different "repair" mecanism after desynchronization of cassandra nodes...
 
@@ -169,7 +169,7 @@ cqlsh:my_keyspace_rf3> SOURCE '/TPs/TP1/insert_dataset_for_temperature_by_city.c
 
 
 ### hinted handoff
-*~~Scenario~~: write in CL=ALL with one fallen node. When the fallen node comes back in the ring, the coordinator should notify it to resynchronize (hinted handoff)*
+***Scenario***: *write in CL=ALL with one fallen node. When the fallen node comes back in the ring, the coordinator should notify it to resynchronize (hinted handoff)*
 
 Shutdown cassandra-node-2:
 ```
@@ -221,7 +221,7 @@ cqlsh:my_keyspace_rf3> SELECT * from temperature_by_city where city = 'madrid';
 *As you can see, the madrid row has been resynchronized on cassandra-node-2 ! (hinted handoff)*
 
 ### read repair
-*~~Scenario~~: demonstrate a node resynchronizatio with 'read repair'*
+***Scenario***: *demonstrate a node resynchronizatio with 'read repair'*
 
 ReStart the 3-node cluster:
 ```
@@ -270,6 +270,7 @@ To check now the value has been fixed to 0°C on node-1 and node-2 (thanks to *'
 docker-compose stop cassandra-node-0 cassandra-node-2
 ```
 from node-1:
+```
 cqlsh:my_keyspace_rf3> SELECT * from temperature_by_city where city = 'dublin';
 
  city   | date       | temperature
