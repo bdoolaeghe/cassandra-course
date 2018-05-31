@@ -1,7 +1,7 @@
 TP3 - FAULT TOLERANCE
 =====================
 
-** *TP3 will illustrate the fault tolerance cassandra capabilities* **
+***TP3 will illustrate the fault tolerance cassandra capabilities***
 
 Installation
 ------------
