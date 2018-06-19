@@ -1,7 +1,7 @@
 TP3 - HINTED HANDOFF
 ====================
 
-***Scenario***: *write in CL=ALL with one fallen node. When the fallen node comes back in the ring, the coordinator should notify it to resynchronize (hinted handoff)*
+***Scenario***: *write data with one fallen node. When the fallen node comes back in the ring, the coordinator should notify it to resynchronize (hinted handoff)*
 
 Shutdown cassandra-node-2:
 ```
@@ -10,6 +10,7 @@ docker-compose stop cassandra-node-2
 Open a cqlsh on node-1, and insert data for Madrid:
 ```
 cqlsh:> USE my_keyspace_rf3;
+cqlsh:> CONSISTENCY ONE;
 cqlsh:my_keyspace_rf3> INSERT INTO temperature_by_city (city, date, temperature) VALUES ('madrid', '2017-01-01', 10);
 ```
 
@@ -22,13 +23,8 @@ Open a cqlsh on node-2, and read data for Madrid:
 ```
 cqlsh:> USE my_keyspace_rf3;
 cqlsh:my_keyspace_rf3> SELECT * from temperature_by_city where city = 'madrid' ;
-
- city | date | temperature
-------+------+-------------
-
-(0 rows)
 ```
-*As expected, cassandra-node-2 is desynchronized*
+Can we read inserted data on cassandra-node-2 ?
 
 Now, restart the whole cluster:
 ```
@@ -43,13 +39,7 @@ docker-compose stop cassandra-node-0 cassandra-node-1
 Request Madrid data onto node-2:
 ```
 cqlsh:my_keyspace_rf3> SELECT * from temperature_by_city where city = 'madrid';
-
- city   | date       | temperature
---------+------------+-------------
- madrid | 2017-01-01 |          10
-
-(1 rows)
 ```
-*As you can see, the madrid row has been resynchronized on cassandra-node-2 ! (hinted handoff)*
+Can we read now the inserted data on cassandra-node-2 ?
 
 [>> Next (TP3.4_read_repair.md](TP3.4_read_repair.md)

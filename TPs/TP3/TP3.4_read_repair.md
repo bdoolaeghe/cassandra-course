@@ -36,12 +36,6 @@ docker-compose up -d
 ```
 cqlsh:my_keyspace_rf3> CONSISTENCY ALL;
 cqlsh:my_keyspace_rf3> SELECT * from temperature_by_city where city = 'dublin';
-
- city   | date       | temperature
---------+------------+-------------
- dublin | 2017-01-01 |           0
-
-(1 rows)
 ```
 *We got 0°C because it's the last written value.* 
 
@@ -52,13 +46,9 @@ docker-compose stop cassandra-node-0 cassandra-node-2
 from node-1:
 ```
 cqlsh:my_keyspace_rf3> SELECT * from temperature_by_city where city = 'dublin';
-
- city   | date       | temperature
---------+------------+-------------
- dublin | 2017-01-01 |           0
-
-(1 rows)
 ```
-*You can also check value on node-2. As you can see, the last value has been propagated with* "read repair" *!*
+So, what is the read temperature ??
+
+*You can also check value on node-2*
 
 [>> Next (TP3.4_nodetool_repair.md](TP3.4_nodetool_repair.md)

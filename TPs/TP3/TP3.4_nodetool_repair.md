@@ -39,11 +39,5 @@ $> nodetool repair
 Rad temperature in Bruxcelles from repaired nodes cassandra-node-1 (then cassandra-node-2):
 ```
 cqlsh:my_keyspace_rf3> SELECT * FROM temperature_by_city WHERE city = 'bruxelles';
-
- city      | date       | temperature
------------+------------+-------------
- bruxelles | 2017-01-01 |           0
-
-(1 rows)
 ```
-*You can see the last value 0°C has been fixed on node-1 and node-2* !
+So, what is the read value ?
