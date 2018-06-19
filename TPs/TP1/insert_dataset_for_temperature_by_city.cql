@@ -1,5 +1,3 @@
-USE my_keyspace;
-
 INSERT INTO temperature_by_city (city, date, temperature) VALUES ('paris', '2016-01-01', 2.1);
 INSERT INTO temperature_by_city (city, date, temperature) VALUES ('londres', '2016-01-01', 0.1);
 INSERT INTO temperature_by_city (city, date, temperature) VALUES ('berlin', '2016-01-01', -1.1);
