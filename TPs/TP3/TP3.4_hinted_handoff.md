@@ -1,7 +1,7 @@
 TP3 - HINTED HANDOFF
 ====================
 
-***Scenario***: *write in CL=ALL with one fallen node. When the fallen node comes back in the ring, the coordinator should notify it to resynchronize (hinted handoff)*
+***Scenario***: *write data with one fallen node. When the fallen node comes back in the ring, the coordinator should notify it to resynchronize (hinted handoff)*
 
 Shutdown cassandra-node-2:
 ```
@@ -10,6 +10,7 @@ docker-compose stop cassandra-node-2
 Open a cqlsh on node-1, and insert data for Madrid:
 ```
 cqlsh:> USE my_keyspace_rf3;
+cqlsh:> CONSISTENCY ONE;
 cqlsh:my_keyspace_rf3> INSERT INTO temperature_by_city (city, date, temperature) VALUES ('madrid', '2017-01-01', 10);
 ```
 
