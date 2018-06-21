@@ -30,7 +30,10 @@ What's happening ?
 ***Scenario***: *use replication factor (RF) and consistency level (CL)*
 
 Let's now have some data replication. 
-
+* restart all nodes:
+```
+docker-compose up -d
+```
 * From any node create a new *my_keyspace_rf2* keyspace with replication (RF=2):
 ```
 cqlsh> SOURCE '/TPs/TP3/create_keyspace_rf2.cql'
