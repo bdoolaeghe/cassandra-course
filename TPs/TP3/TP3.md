@@ -28,7 +28,7 @@ A 3-node cassandra cluster is already configured in [docker-compose.yml](docker-
 * startup the cluster with docker-compose:
 ```
 cd TPS/TP3/
-docker-compose -d
+docker-compose up -d
 ```
 
 _NB: you can check logs with:_
