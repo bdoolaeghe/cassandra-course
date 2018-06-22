@@ -32,6 +32,7 @@ Ressources
 * [Datastax java driver documentation](https://docs.datastax.com/en/developer/java-driver/3.3/)
 * [cassandra-unit](https://github.com/jsevellec/cassandra-unit)
 * [cassandra-unit examples](https://github.com/jsevellec/cassandra-unit-examples)
+* [about read path](https://docs.datastax.com/en/cassandra/3.0/cassandra/dml/dmlAboutReads.html)
 
 Other ressources
 ================
