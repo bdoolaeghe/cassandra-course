@@ -1,11 +1,19 @@
 ![alt text](http://eswt.net/wp-content/uploads/2011/06/hands-on_workshop.jpg "Hands on cassandra !")
 
-Here is the training part of the cassandra course 1, related to the [slides](https://docs.google.com/presentation/d/1k1H8aedareHz4pVkB7e5FudakjMS5WnramuGYDeLSDI/edit#slide=id.p3)
+Here is the training part of the cassandra course, related to the [slides](https://docs.google.com/presentation/d/1SX8EzKGzyH92ca_5BAPKvYkerPrOmxLFsS08be0VZgI/edit?usp=sharing)
 
 Training
 ========
-* [TP1](TPs/TP1/TP1.md)  - Practice CQL
-* [TP2](TPs/TP2/TP2.md)  - Practice the CQL java driver
+* [TP1 - Practice CQL](TPs/TP1/TP1.md)  
+* [TP2 - Practice the CQL java driver](TPs/TP2/TP2.md)
+* [TP3 - Practice Fault tolerance](TPs/TP3/TP3.md)
+ * [TPs/TP3/TP3.1_masterless_archi.md](TPs/TP3/TP3.1_masterless_archi.md)
+ * [TPs/TP3/TP3.2_data_availability.md](TPs/TP3/TP3.2_data_availability.md)
+ * [TPs/TP3/TP3.3_tunable_consistency.md](TPs/TP3/TP3.3_tunable_consistency.md)
+ * [TPs/TP3/TP3.4_fail_over.md](TPs/TP3/TP3.4_fail_over.md)
+   * [TPs/TP3/TP3.4_hinted_handoff.md](TPs/TP3/TP3.4_hinted_handoff.md)
+   * [TPs/TP3/TP3.4_read_repair.md](TPs/TP3/TP3.4_read_repair.md)
+   * [TPs/TP3/TP3.4_nodetool_repair.md](TPs/TP3/TP3.4_nodetool_repair.md)
 
 FAQ
 ===
@@ -24,6 +32,7 @@ Ressources
 * [Datastax java driver documentation](https://docs.datastax.com/en/developer/java-driver/3.3/)
 * [cassandra-unit](https://github.com/jsevellec/cassandra-unit)
 * [cassandra-unit examples](https://github.com/jsevellec/cassandra-unit-examples)
+* [about read path](https://docs.datastax.com/en/cassandra/3.0/cassandra/dml/dmlAboutReads.html)
 
 Other ressources
 ================
