@@ -1,4 +1,6 @@
-Here is the training part of the cassandra course 1, related to the [slides](https://docs.google.com/presentation/d/1k1H8aedareHz4pVkB7e5FudakjMS5WnramuGYDeLSDI/edit#slide=id.p3)
+![alt text](http://eswt.net/wp-content/uploads/2011/06/hands-on_workshop.jpg "Hands on cassandra !")
+
+Here is the training part of the cassandra course, related to the [slides](https://docs.google.com/presentation/d/1SX8EzKGzyH92ca_5BAPKvYkerPrOmxLFsS08be0VZgI/edit?usp=sharing)
 
 Training
 ========
@@ -30,6 +32,7 @@ Ressources
 * [Datastax java driver documentation](https://docs.datastax.com/en/developer/java-driver/3.3/)
 * [cassandra-unit](https://github.com/jsevellec/cassandra-unit)
 * [cassandra-unit examples](https://github.com/jsevellec/cassandra-unit-examples)
+* [about read path](https://docs.datastax.com/en/cassandra/3.0/cassandra/dml/dmlAboutReads.html)
 
 Other ressources
 ================
