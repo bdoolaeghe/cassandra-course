@@ -13,20 +13,19 @@ Let's suppose one node is fallen...
 ```
 docker stop cassandra-node-2 
 ```
-_NB: You can also stop a node with "square" (stop) button on [scope](http://localhost:4040). Then, you should see the last node has disappeared._
-
 * Open a cqlsh from cassandra-node-1 (in [scope](http://localhost:4040)) , and query the data from 'paris': 
 ```
 cqlsh> use my_keyspace ;
 cqlsh:my_keyspace> SELECT * from temperature_by_city where city = 'paris' ;
 ```
-* Now,  query the data from 'berlin':
+* then,  query the data from 'berlin', and then, from 'londres'.
+* finally, query the data from all cities:
 ```
-cqlsh:my_keyspace> SELECT * from temperature_by_city where city = 'berlin' ;
+cqlsh:my_keyspace> SELECT * from temperature_by_city;
 ```
 What's happening ?
 
-*The partition for 'berlin' can't be queried, because the node hosting the data is fallen. With no replication, when a node is lost, some data is unavailable.*
+*The partition for some cities can't be queried, because the node hosting the data is fallen. With no replication, when a node is lost, some data is unavailable. We can not either 'SELECT *' because all data is not available.*
 
 ### Cluster with replication (RF=2)
 ***Scenario***: *use replication factor (RF) and consistency level (CL)*
@@ -41,9 +40,9 @@ cqlsh> SOURCE '/TPs/TP1/create_table_temperature_by_city.cql'
 cqlsh> SOURCE '/TPs/TP1/insert_dataset_for_temperature_by_city.cql'
 ```
 
-* Again, shutdown a node, and query the data from 'paris' and 'berlin' as we earlier did [with no replication](#user-content-cluster-with-no-replication). Conclusion ?
+* Again, shutdown a node, and query the data from 'paris', 'berlin' and 'londres' as we earlier did [with no replication](#user-content-cluster-with-no-replication). Conclusion ?
 
 *Thanks to replication, when a node is fallen, we can 
-still get the data from a replica.*
+still get all the data from a replica.*
 
 [>> Next (TP3.3_tunable_consistency.md)](TP3.3_tunable_consistency.md)
