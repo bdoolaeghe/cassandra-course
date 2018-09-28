@@ -20,9 +20,10 @@ _NB: You can also stop a node with "square" (stop) button on [scope](http://loca
 cqlsh> use my_keyspace ;
 cqlsh:my_keyspace> SELECT * from temperature_by_city where city = 'paris' ;
 ```
-* Now,  query the data from 'berlin':
+* then,  query the data from 'berlin', and then, from 'londres'.
+* finally, query the data from all cities:
 ```
-cqlsh:my_keyspace> SELECT * from temperature_by_city where city = 'berlin' ;
+cqlsh:my_keyspace> SELECT * from temperature_by_city;
 ```
 What's happening ?
 
@@ -42,6 +43,6 @@ cqlsh> SOURCE '/TPs/TP1/create_table_temperature_by_city.cql'
 cqlsh> SOURCE '/TPs/TP1/insert_dataset_for_temperature_by_city.cql'
 ```
 
-* Again, shutdown a node, and query the data from 'paris' and 'berlin' as we earlier did [with no replication](#user-content-cluster-with-no-replication). Conclusion ?
+* Again, shutdown a node, and query the data from 'paris', 'berlin' 'londres' as we earlier did [with no replication](#user-content-cluster-with-no-replication). Conclusion ?
 
 [>> Next (TP3.3_tunable_consistency.md)](TP3.3_tunable_consistency.md)
