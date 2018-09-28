@@ -13,8 +13,6 @@ Let's suppose one node is fallen...
 ```
 docker stop cassandra-node-2 
 ```
-_NB: You can also stop a node with "square" (stop) button on [scope](http://localhost:4040). Then, you should see the last node has disappeared._
-
 * Open a cqlsh from cassandra-node-1 (in [scope](http://localhost:4040)) , and query the data from 'paris': 
 ```
 cqlsh> use my_keyspace ;
