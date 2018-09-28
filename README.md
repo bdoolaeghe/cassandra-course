@@ -1,6 +1,6 @@
 ![alt text](http://eswt.net/wp-content/uploads/2011/06/hands-on_workshop.jpg "Hands on cassandra !")
 
-Here is the training part of the cassandra course, related to the [slides](https://docs.google.com/presentation/d/1SX8EzKGzyH92ca_5BAPKvYkerPrOmxLFsS08be0VZgI/edit?usp=sharing)
+Here is the training part of the cassandra course, related to the [slides](https://docs.google.com/presentation/d/1nWE5abDkBcPMVjp7SeRgaSQN2f5msM5TLBSOAItZxeA/edit?usp=sharing)
 
 Training
 ========
