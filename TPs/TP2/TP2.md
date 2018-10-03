@@ -8,7 +8,7 @@ Clone this git repository (if not done yet) and import TP2 Maven project in your
 * [IntelliJ lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok-plugin)
 * [eclipse install](https://projectlombok.org/setup/eclipse)
 
-You can see the project is partly imphttps://projectlombok.org/lemented, and some [JUnit tests]((src/test/java/fr/soat/cassandra/course1/) are implemented, but failing. At the end of TP all tests should be green !
+You can see the project is partly implemented, and some [JUnit tests](src/test/java/fr/soat/cassandra/course1/) are implemented, but failing. At the end of TP all tests should be green !
 
 Now, write in [TemperatureByCityRepository](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java) the following methods:
 * **[Q2.1]** [getById(city, date)](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java#L46), returning the temperature **in a city at a given date** (hint: use the _Mapper<TemperatureByCity>_)
