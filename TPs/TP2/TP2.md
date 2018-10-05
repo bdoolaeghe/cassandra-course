@@ -1,34 +1,155 @@
 ![alt text](https://linkurio.us/wp-content/uploads/2016/06/datastax_logo-600x140.jpg "TP2")
 
-TP2 - Practice the java Datastax driver
-=======================================
-Clone this git repository (if not done yet) and import TP2 Maven project in your favorite IDE. 
+TP2.1 - Train with the java Datastax driver
+===========================================
+Clone this git repository (if not done yet), checkout branch *booster_camp* and import TP2 Maven project in your favorite IDE. 
 
 *Nota: the project depends on [lombok](https://projectlombok.org/). You may have to install lombok plugin in your IDE to build successfully the cassandra-course TP:*
-* [IntelliJ lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok-plugin)
-* [eclipse install](https://projectlombok.org/setup/eclipse)
+* *[IntelliJ lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok-plugin)*
+* *[eclipse install](https://projectlombok.org/setup/eclipse)*
 
-You can see the project is partly implemented, and some [JUnit tests](src/test/java/fr/soat/cassandra/course1/) are implemented, but failing. At the end of TP all tests should be green !
+The project is already setup as a cassandra java project. As you can see in the [pom.xml](pom.xml), we have declared dependencies to the java [DataStax driver](https://docs.datastax.com/en/developer/java-driver/3.4/):
 
-Now, write in [TemperatureByCityRepository](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java) the following methods:
-* **[Q2.1]** [getById(city, date)](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java#L46), returning the temperature **in a city at a given date** (hint: use the _Mapper<TemperatureByCity>_)
-* **[Q2.2]** [getByIdAsync(city, date)](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java#L52), same -- **but asynchronous** -- mehtod as _getById(city, date)_  (hint: also use the Mapper<TemperatureByCity>)
-* **[Q2.3]** [getLastByCity(city)](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java#L67), giving the **last temperature in a given city** (hint: use _TemperatureByCityAccessor_)
-* **[Q2.4]** [getLastByCityAsync(city)](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java#L72), same -- **but asynchronous** -- method as _getLastByCity(city)_  (hint: use same accessor)
-* **[Q2.5]** [getFirstByCity(city)](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java#L77), giving the **oldest temperature in a given city** (hint: use the accessor)
-* **[Q2.6]** [saveBatch(temperatures)](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java#L82), **saving a list of temperatures** at some dates in some cities (hint: don't use cassandra [BatchStatement](https://docs.datastax.com/en/cql/3.3/cql/cql_reference/cqlBatch.html), but apply save operations in paralllel)
+```
+        <!-- cassandra driver -->
+        <dependency>
+            <groupId>com.datastax.cassandra</groupId>
+            <artifactId>cassandra-driver-core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+```
+These jars will provide all classes required to create a connection to a cassandra cluster, and execute queries on it. As we want to use the new *java.util.LocalDate* type to map the temperature date from cassandra, we also need an additional jar:
+```
+        <!-- extras for LocalDate type support-->
+        <dependency>
+            <groupId>com.datastax.cassandra</groupId>
+            <artifactId>cassandra-driver-extras</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+```
+
+We also use *cassandra-unit* for testing, to start an embeded cassandra node when running tests:
+```
+        <dependency>
+            <groupId>org.cassandraunit</groupId>
+            <artifactId>cassandra-unit</artifactId>
+            <version>3.0.0.1</version>
+            <scope>test</scope>
+        </dependency>
+```
+As you will see in *TemperatureRepositoryTest* test class,  we will start an embeded single-node-Cassandra cluster (started in the same JVM, on default port **9142**):
+```
+    @BeforeClass
+    public static void startup() {
+        // startup embeded cassandra
+        EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+        ...
+    }
+```
+
+Setup a SessionProvider
+-----------------------
+First, we need to setup a *SessionProvider*, that will provide us a *Session* object, to connect and query the Cassandra clsuter. Open class *SessionProvider*, and implement the method *createCluster()* that should create, configure and return a *Cluster*, representing the cassandra cluster we want to connect through a *Session* to:
+```
+    private Cluster createCluster() {
+        throw new RuntimeException("implement me !");
+    }
+
+```
+Use a *Cluster.builder()* to build and configurea a *Cluster* instance ine *createCluster()*.
+
+:+1: A *Cluster* configuration can have many options ; but in this training, we'll setup a simple configuration; setting:
+* the *contact points* (list of cassandra node the driver can contact as *coordinators*). In our simple case, there is just one node: **"localhost"**
+* the connection port: 9142
+* the support of java.util.LocalDate type:
+```
+        cluster.getConfiguration().getCodecRegistry().register(LocalDateCodec.instance);
+```
+
+Once *createCluster()* has been implemented, we'll be able to get a *Session* object to connect and query cassandra:
+```
+    public Session newSession() {
+        return cluster.connect();
+    }
+
+```
 
 
-Extra
------
-* **[Q2.7]** [getByCityUntil(city, boudnDate)](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java#L87), returning all the temperatures **in a given city before a given bound date, in reverse chronological order** (that is, the latest temperature first)
-* **[Q2.8]** [getByCityUntilAsc(city, boudnDate)](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java#L92), same as [getByCityUntil(city, boudnDate)](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java#L87) but **in chronological order** (that is, the latest temperature in last)
+Implement simple Repository
+---------------------------
+*The goal of this training is to use the DataStax driver to write the [TemperatureRepository](src/main/java/fr/soat/cassandra/course1/repository/TemperatureRepository.java) 3 methods, demonstrating the different way we can execute cassandra queries:*
+```
+    public List<Temperature> getAll() {
+        throw new RuntimeException("implement me !");
+    }
 
-Extra bis !
------------
-* **[Q2.9]** complete the [TemperatureByDate](src/main/java/fr/soat/cassandra/course1/model/TemperatureByDate.java) bean to map new table [temperature_by_date](src/main/resources/cql/create_table_temperature_by_date.cql) and complete the repository class [TemperatureByDateRepository](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByDateRepository.java) the method _getByDate(date)_, to save and get the temperatures at a given date **in every city** (hint: use table temperature_by_date, with [create_table_temperature_by_date.cql](src/main/resources/cql/create_table_temperature_by_date.cql) and [insert_dataset_for_temperature_by_date.cql](src/main/resources/cql/insert_dataset_for_temperature_by_date.cql) )
-* **[Q2.10]** create an **aggregating service** [TemperatureService](src/main/java/fr/soat/cassandra/course1/service/TemperatureService.java), to:
- * save a temperature **in a city at a given date** (hint: delegate to the 2 underlying repositories [TemperatureByCityRepository](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByCityRepository.java) and [TemperatureByDateRepository](src/main/java/fr/soat/cassandra/course1/repository/TemperatureByDateRepository.java))
- * get the temperatures in a **given city**
- * get the temperatures at a **given date**
+    public void save(Temperature temperature) {
+        throw new RuntimeException("implement me !");
+    }
 
+    public Temperature getByCityAndDate(String city, LocalDate date) {
+        throw new RuntimeException("implement me !");
+    }
+
+```
+
+To check our implementation is fine, we'll use the already written test class [TemperatureRepositoryTest](src/main/java/fr/soat/cassandra/course1/repository/TemperatureRepositoryTest.java). As you can see, this test is based on *cassandra-unit*. At setup, it will:
+* start an embeded cassandra 1-noide cluster:
+```
+		// startup embeded cassandra
+        EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+```
+* create a "my_keyspace" keyspace, and *temperature_by_city* table:
+```
+        // create keyspace
+        new CQLDataLoader(initSession).load(new ClassPathCQLDataSet("cql/create_keyspace.cql"));
+        ...
+        // create tables
+        new CQLDataLoader(session).load(new ClassPathCQLDataSet("cql/create_table_temperature_by_city.cql", false));
+
+```
+* create a *Session* with *SessionProvider* to be used in the [TemperatureRepository](src/main/java/fr/soat/cassandra/course1/repository/TemperatureRepository.java):
+```
+		session = sessionProvider.newSession(KEYSPACE);
+		...
+		repository = new TemperatureRepository(session);
+```
+
+Enough talk ! It's now time to implement the repository...
+
+### Implement *getAll()*
+
+Implement *TemperatureRepository.getAll()*, expecting to return every temperature in table *temperature_by_city*.
+
+:+1: The simplest way to execute a simple CQL query with DataStax driver, is to use **session.execute(*<CQL query as string>*)**. Try it, then use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your implementation !
+
+###  Implement *save(temperature)*
+
+Implement *TemperatureRepository.save(temperature)*, expecting to save in table *temperature_by_city* a single temperature in a city at a given date.
+
+:+1: To execute the save, we will use a [PreparedStatement](https://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/PreparedStatement.html). Datastax PreparedStatement are very similar to JDBC PreapredSTatement. You can use it to prepare a parametered stetement, and then bind some parameters to values. Follow the [DataStax PreparedStatement documentation](https://docs.datastax.com/en/developer/java-driver/3.0/manual/statements/prepared/) to implement the *save(temperature)* method.
+
+Use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_save_a_single_temperature* to test your implementation !
+
+### implement *getByCityAndDate()*
+
+Implement now the method *getByCityAndDate()*, finding a temparature by city and date. 
+
+:+1: we could use here a [PreparedStatement](https://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/PreparedStatement.html) also. But, another way to execute *dynamic* queries is to Use DataStax [QueryBuilder](https://docs.datastax.com/en/drivers/java/2.0/com/datastax/driver/core/querybuilder/QueryBuilder.html) API. You can follow an [exisintg exemple](https://docs.datastax.com/en/developer/java-driver/3.6/manual/statements/built/#specifying-conditions) to write your own for *getByCityAndDate()*.
+
+Once your implementation is over, use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature* for testing !
+
+
+
+Datastax Object Mapping
+-----------------------
+
+The Datastax driver provides some more advanced object mapping mecanism (as you could find with [Hibernate](https://hibernate.org/)). To use cassandra mapping, add in the [pom.xml](pom.xml) a dependency to *cassandra-driver-mapping*: 
+
+```
+       <dependency>
+            <groupId>com.datastax.cassandra</groupId>
+            <artifactId>cassandra-driver-mapping</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+```

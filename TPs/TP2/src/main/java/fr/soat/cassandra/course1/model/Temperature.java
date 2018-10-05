@@ -1,18 +1,14 @@
-package fr.soat.cassandra.course1.dto;
+package fr.soat.cassandra.course1.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class Temperature {
-    private String city;
     private LocalDate date;
+    private String city;
     private float temperature;
 }

@@ -1,2 +1,0 @@
-TRUNCATE temperature_by_city;
-TRUNCATE temperature_by_date;

@@ -1,48 +1,37 @@
 package fr.soat.cassandra.session;
 
 import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ConsistencyLevel;
-import com.datastax.driver.core.QueryOptions;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.extras.codecs.jdk8.LocalDateCodec;
-import lombok.Getter;
 
 public class SessionProvider {
-
-    public static final String KEYSPACE = "my_keyspace";
-
-    @Getter
-    private int port;
 
     private Cluster cluster;
 
     public SessionProvider() {
-        // dfault cassandra port
-        this(9042);
+        this.cluster = createCluster();
     }
 
-    public SessionProvider(int port) {
-        this.port = port;
-        init(port);
-    }
-
-    private void init(int port) {
+    private Cluster createCluster() {
         Cluster.Builder clusterBuilder = Cluster.builder()
                 .addContactPoints("localhost")
-                .withPort(port);
-//                .withQueryOptions(new QueryOptions().setConsistencyLevel(ConsistencyLevel.QUORUM));
-        cluster = clusterBuilder.build();
+                .withPort(9142);
+        Cluster cluster = clusterBuilder.build();
+
         // register type codecs
         cluster.getConfiguration().getCodecRegistry()
                 .register(LocalDateCodec.instance);
-    }
 
-    public Session newSession() {
-        return cluster.connect();
+        return cluster;
+//        throw new RuntimeException("implement me !");
     }
 
     public Session newSession(String keyspace) {
         return cluster.connect(keyspace);
+    }
+
+    public Session newSession() {
+        return cluster.connect();
     }
 
 }
