@@ -58,10 +58,10 @@ First, we need to setup a *SessionProvider*, that will provide us a *Session* ob
 ```
 Use a *Cluster.builder()* to build and configurea a *Cluster* instance ine *createCluster()*.
 
-:+1: A *Cluster* configuration can have many options ; but in this training, we'll setup a simple configuration; setting:
-* the *contact points* (list of cassandra node the driver can contact as *coordinators*). In our simple case, there is just one node: **"localhost"**
-* the connection port: 9142
-* the support of java.util.LocalDate type:
+> :+1: A *Cluster* configuration can have many options ; but in this training, we'll setup a simple configuration; setting:
+> * the *contact points* (list of cassandra node the driver can contact as *coordinators*). In our simple case, there is just one node: **"localhost"**
+> * the connection port: 9142
+> * the support of java.util.LocalDate type:
 ```
         cluster.getConfiguration().getCodecRegistry().register(LocalDateCodec.instance);
 ```
@@ -121,13 +121,13 @@ Enough talk ! It's now time to implement the repository...
 
 Implement *TemperatureRepository.getAll()*, expecting to return every temperature in table *temperature_by_city*.
 
-:+1: The simplest way to execute a simple CQL query with DataStax driver, is to use **session.execute(*<CQL query as string>*)**. Try it, then use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your implementation !
+> :+1: The simplest way to execute a simple CQL query with DataStax driver, is to use > **session.execute(*<CQL query as string>*)**. Try it, then use  *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your implementation !
 
 ###  Implement *save(temperature)*
 
 Implement *TemperatureRepository.save(temperature)*, expecting to save in table *temperature_by_city* a single temperature in a city at a given date.
 
-:+1: To execute the save, we will use a [PreparedStatement](https://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/PreparedStatement.html). Datastax PreparedStatement are very similar to JDBC PreapredSTatement. You can use it to prepare a parametered stetement, and then bind some parameters to values. Follow the [DataStax PreparedStatement documentation](https://docs.datastax.com/en/developer/java-driver/3.0/manual/statements/prepared/) to implement the *save(temperature)* method.
+> :+1: To execute the save, we will use a [PreparedStatement](https://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/PreparedStatement.html). Datastax PreparedStatement are very similar to JDBC PreapredSTatement. You can use it to prepare a parametered stetement, and then bind some parameters to values. Follow the [DataStax PreparedStatement documentation](https://docs.datastax.com/en/developer/java-driver/3.0/manual/statements/prepared/) to implement the *save(temperature)* method.
 
 Use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_save_a_single_temperature* to test your implementation !
 
@@ -135,7 +135,7 @@ Use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_save_
 
 Implement now the method *getByCityAndDate()*, finding a temparature by city and date. 
 
-:+1: we could use here a [PreparedStatement](https://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/PreparedStatement.html) also. But, another way to execute *dynamic* queries is to Use DataStax [QueryBuilder](https://docs.datastax.com/en/drivers/java/2.0/com/datastax/driver/core/querybuilder/QueryBuilder.html) API. You can follow an [exisintg exemple](https://docs.datastax.com/en/developer/java-driver/3.6/manual/statements/built/#specifying-conditions) to write your own for *getByCityAndDate()*.
+> :+1: we could use here a [PreparedStatement](https://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/PreparedStatement.html) also. But, another way to execute *dynamic* queries is to Use DataStax [QueryBuilder](https://docs.datastax.com/en/drivers/java/2.0/com/datastax/driver/core/querybuilder/QueryBuilder.html) API. You can follow an [exisintg exemple](https://docs.datastax.com/en/developer/java-driver/3.6/manual/statements/built/#specifying-conditions) to write your own for *getByCityAndDate()*.
 
 Once your implementation is over, use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature* for testing !
 
