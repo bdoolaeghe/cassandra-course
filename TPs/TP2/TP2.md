@@ -49,7 +49,9 @@ As you will see in *TemperatureRepositoryTest* test class,  we will start an emb
 
 Setup a SessionProvider
 -----------------------
-First, we need to setup a *SessionProvider*, that will provide us a *Session* object, to connect and query the Cassandra clsuter. Open class *SessionProvider*, and implement the method *createCluster()* that should create, configure and return a *Cluster*, representing the cassandra cluster we want to connect through a *Session* to:
+_First, we need to setup a **SessionProvider**, that will provide us a *Session* object, to connect and query the Cassandra clsuter._
+
+open class *SessionProvider*, and implement the method *createCluster()* that should create, configure and return a *Cluster*, representing the cassandra cluster we want to connect through a *Session* to:
 ```
     private Cluster createCluster() {
         throw new RuntimeException("implement me !");
@@ -120,12 +122,14 @@ To check our implementation is fine, we'll use the already written test class [T
 Enough talk ! It's now time to implement the repository...
 
 ### Implement *getAll()*
+_We are now to implement a simple quering repository method using **session.execute(String cql)**_
 
 Implement *TemperatureRepository.getAll()*, expecting to return every temperature in table *temperature_by_city*.
 
 :+1: The simplest way to execute a simple CQL query with DataStax driver, is to use > **session.execute(*<CQL query as string>*)**. Try it, then use  *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your implementation !
 
 ###  Implement *save(temperature)*
+_The goal here is to train with **PreparedStatment** and **BoundStatment**_
 
 Implement *TemperatureRepository.save(temperature)*, expecting to save in table *temperature_by_city* a single temperature in a city at a given date.
 
@@ -134,6 +138,7 @@ Implement *TemperatureRepository.save(temperature)*, expecting to save in table 
 Use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_save_a_single_temperature* to test your implementation !
 
 ### implement *getByCityAndDate()*
+_We will here use the **QueryBuilder** to build cassandra queries._
 
 Implement now the method *getByCityAndDate()*, finding a temparature by city and date. 
 
@@ -145,8 +150,9 @@ Once your implementation is over, use *fr.soat.cassandra.course1.repository.Temp
 
 Datastax Object Mapping
 -----------------------
+_The Datastax driver provides some more advanced object mapping mecanism (as you could find with [Hibernate](https://hibernate.org/))._
 
-The Datastax driver provides some more advanced object mapping mecanism (as you could find with [Hibernate](https://hibernate.org/)). To use cassandra mapping, add in the [pom.xml](pom.xml) a dependency to *cassandra-driver-mapping*: 
+To use cassandra mapping, add in the [pom.xml](pom.xml) a dependency to *cassandra-driver-mapping*: 
 
 ```
        <dependency>
