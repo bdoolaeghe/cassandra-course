@@ -58,12 +58,13 @@ First, we need to setup a *SessionProvider*, that will provide us a *Session* ob
 ```
 Use a *Cluster.builder()* to build and configurea a *Cluster* instance ine *createCluster()*.
 
-```
+<i>
 :+1: A *Cluster* configuration can have many options ; but in this training, we'll setup a simple configuration; setting:
 * the *contact points* (list of cassandra node the driver can contact as *coordinators*). In our simple case, there is just one node: **"localhost"**
 * the connection port: 9142
 * the support of java.util.LocalDate type:
-
+</i>
+```
         cluster.getConfiguration().getCodecRegistry().register(LocalDateCodec.instance);
 ```
 
