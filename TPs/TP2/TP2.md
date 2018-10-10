@@ -124,7 +124,7 @@ Implement simple Repository
 To check our implementation is fine, we'll use the already written test class [TemperatureRepositoryTest](src/main/java/fr/soat/cassandra/course1/repository/TemperatureRepositoryTest.java). As you can see, this test is based on *cassandra-unit*. At setup, it will:
 * start an embeded cassandra 1-noide cluster:
 ```
-		// startup embeded cassandra
+	// startup embeded cassandra
         EmbeddedCassandraServerHelper.startEmbeddedCassandra();
 ```
 * create a "my_keyspace" keyspace, and *temperature_by_city* table:

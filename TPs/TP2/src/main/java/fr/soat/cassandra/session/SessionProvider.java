@@ -13,17 +13,7 @@ public class SessionProvider {
     }
 
     private Cluster createCluster() {
-        Cluster.Builder clusterBuilder = Cluster.builder()
-                .addContactPoints("localhost")
-                .withPort(9142);
-        Cluster cluster = clusterBuilder.build();
-
-        // register type codecs
-        cluster.getConfiguration().getCodecRegistry()
-                .register(LocalDateCodec.instance);
-
-        return cluster;
-//        throw new RuntimeException("implement me !");
+        throw new RuntimeException("implement me !");
     }
 
     public Session newSession(String keyspace) {

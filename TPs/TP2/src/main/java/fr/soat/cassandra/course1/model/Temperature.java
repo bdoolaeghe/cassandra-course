@@ -1,9 +1,5 @@
 package fr.soat.cassandra.course1.model;
 
-import com.datastax.driver.mapping.annotations.ClusteringColumn;
-import com.datastax.driver.mapping.annotations.Column;
-import com.datastax.driver.mapping.annotations.PartitionKey;
-import com.datastax.driver.mapping.annotations.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,15 +11,11 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "temperature_by_city")
 public class Temperature {
 
-    @PartitionKey
     private String city;
 
-    @ClusteringColumn
     private LocalDate date;
 
-    @Column
     private float temperature;
 }
