@@ -159,7 +159,10 @@ _We will here use the **QueryBuilder** to build cassandra queries._
 
 Implement now the method *getByCityAndDate()*, finding a temparature by city and date. 
 
+----
 :+1: we could use here a [PreparedStatement](https://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/PreparedStatement.html) also. But, another way to execute *dynamic* queries is to Use DataStax [QueryBuilder](https://docs.datastax.com/en/drivers/java/2.0/com/datastax/driver/core/querybuilder/QueryBuilder.html) API. You can follow an [exisintg exemple](https://docs.datastax.com/en/developer/java-driver/3.6/manual/statements/built/#specifying-conditions) to write your own for *getByCityAndDate()*.
+
+----
 
 *Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature *for testing !*
 
