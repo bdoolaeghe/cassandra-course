@@ -81,7 +81,7 @@ Once *createCluster()* has been implemented, we'll be able to get a *Session* ob
 
 Implement simple Repository
 ---------------------------
-*The goal of this training is to use the DataStax driver to write the [TemperatureRepository](src/main/java/fr/soat/cassandra/course1/repository/TemperatureRepository.java) 3 methods, demonstrating the different way we can execute cassandra queries:*
+*The goal of this part is to use the DataStax driver to write the [TemperatureRepository](src/main/java/fr/soat/cassandra/course1/repository/TemperatureRepository.java) 5 methods, demonstrating the different way we can execute cassandra queries:*
 ```
     public List<Temperature> getAll() {
         throw new RuntimeException("implement me !");
@@ -94,6 +94,15 @@ Implement simple Repository
     public Temperature getByCityAndDate(String city, LocalDate date) {
         throw new RuntimeException("implement me !");
     }
+
+    public List<Temperature> getByCity(String city) {
+        throw new RuntimeException("implement me !");
+    }
+
+    public Temperature getLastByCity(String city) {
+        throw new RuntimeException("implement me !");
+    }
+
 
 ```
 
@@ -126,7 +135,9 @@ _We are now to implement a simple quering repository method using **session.exec
 
 Implement *TemperatureRepository.getAll()*, expecting to return every temperature in table *temperature_by_city*.
 
-:+1: The simplest way to execute a simple CQL query with DataStax driver, is to use > **session.execute(*<CQL query as string>*)**. Try it, then use  *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your implementation !
+:+1: The simplest way to execute a simple CQL query with DataStax driver, is to use  **session.execute(*<CQL query as string>*)**. 
+
+After that, use  *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your implementation !
 
 ###  Implement *save(temperature)*
 _The goal here is to train with **PreparedStatment** and **BoundStatment**_
@@ -147,12 +158,12 @@ Implement now the method *getByCityAndDate()*, finding a temparature by city and
 Once your implementation is over, use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature* for testing !
 
 
-
-Datastax Object Mapping
------------------------
+### Implement getByCity()
 _The Datastax driver provides some more advanced object mapping mecanism (as you could find with [Hibernate](https://hibernate.org/))._
 
-To use cassandra mapping, add in the [pom.xml](pom.xml) a dependency to *cassandra-driver-mapping*: 
+We'll experiment here the *cassandra mappers*, to implement **getByCity(city)**.
+
+First, add in the [pom.xml](pom.xml) a dependency to *cassandra-driver-mapping*, to get access to **com.datastax.driver.mapping.Mapper<T>** class: 
 
 ```
        <dependency>
@@ -161,3 +172,67 @@ To use cassandra mapping, add in the [pom.xml](pom.xml) a dependency to *cassand
             <version>3.3.0</version>
         </dependency>
 ```
+
+Then, you can use an instance of **Mapper<Temperature>** in **TemeratureRepository** to automaticly apply CRUD operations in *temperature_by_city*, and map ResultSet to your **Temperature** type ! 
+* First, annotate the *Temperature* class de define the object / table mapping:
+```
+@Table(name = "temperature_by_city")
+public class Temperature {
+
+    @PartitionKey
+    private String city;
+
+    @ClusteringColumn
+    private LocalDate date;
+
+    @Column
+    private float temperature;
+}
+```
+* Create a mapper instance in *TemperatureRepository*:
+```
+    private Session session;
+    private Mapper<Temperature> mapper;    
+
+    public TemperatureByCityRepository(Session session) {
+        this.session = session;
+        MappingManager mappingManager = new MappingManager(session);
+        this.mapper = mappingManager.mapper(Temperature.class);
+    }
+```
+After that, you can use method *mapper.get(...)* to load a temperature by city and date, and map result to *Temperature* instance !
+
+*Once your implementation is over, use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature2* for testing !*
+
+### Implement getLastByCity()
+_We will here use the Datastax **Accessor** type to build custom cassandra queries (not available in *Mapper*), but still use automatic resultset / object mapping._
+
+To implement **getLastByCity(city)**, we will use the custom CQL query:
+```
+SELECT * FROM temperature_by_city WHERE city = :city LIMIT 1;
+```
+Create a **TemperatureAccessor** inteface, annotated with **@Accessor**. In this interface, you can declare a **getLastByCity()** method, annotated with a corresponding query:
+```
+@Accessor
+public interface TemperatureAccessor {
+
+    @Query("SELECT * FROM temperature_by_city WHERE city = :city LIMIT 1")
+    Temperature getLastByCity(@Param("city") String city);
+
+}
+```
+In **TemperatrureRepository**, You can then create an accessor of type **TemperatureAccessor**, to execute the custom query:
+```
+    private TemperatureAccessor accessor;
+
+    public TemperatureByCityRepository(Session session) {
+        ...
+        MappingManager mappingManager = new MappingManager(session);
+	this.accessor = mappingManager.createAccessor(TemperatureByCityAccessor.class);
+    }
+
+    public Temperature getLastByCity(String city) {
+        return this.accessor...
+    }
+
+
