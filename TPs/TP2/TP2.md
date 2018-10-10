@@ -1,5 +1,14 @@
 ![alt text](https://linkurio.us/wp-content/uploads/2016/06/datastax_logo-600x140.jpg "TP2")
 
+  * [TP2 - Train with the java Datastax driver](#tp2---train-with-the-java-datastax-driver)
+      * [Setup a SessionProvider](#setup-a-sessionprovider)
+      * [Implement simple Repository](#implement-simple-repository)
+         * [Implement <em>getAll()</em>](#implement-getall)
+         * [Implement <em>save(temperature)</em>](#implement-savetemperature)
+         * [implement <em>getByCityAndDate()</em>](#implement-getbycityanddate)
+         * [implement <em>getByCityAndDate2()</em>](#implement-getbycityanddate2)
+         * [implement <em>getLastByCity()</em>](#implement-getlastbycity)
+
 TP2 - Train with the java Datastax driver
 =========================================
 Clone this git repository (if not done yet), checkout branch *booster_camp* and import TP2 Maven project in your favorite IDE. 
