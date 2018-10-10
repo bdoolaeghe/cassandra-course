@@ -1,7 +1,7 @@
 ![alt text](https://linkurio.us/wp-content/uploads/2016/06/datastax_logo-600x140.jpg "TP2")
 
-TP2.1 - Train with the java Datastax driver
-===========================================
+TP2 - Train with the java Datastax driver
+=========================================
 Clone this git repository (if not done yet), checkout branch *booster_camp* and import TP2 Maven project in your favorite IDE. 
 
 *Nota: the project depends on [lombok](https://projectlombok.org/). You may have to install lombok plugin in your IDE to build successfully the cassandra-course TP:*
@@ -58,10 +58,10 @@ open class *SessionProvider*, and implement the method *createCluster()* that sh
     }
 
 ```
-Use a *Cluster.builder()* to build and configurea a *Cluster* instance ine *createCluster()*.
+Use a *Cluster.builder()* to build and configurea a *Cluster* instance in *createCluster()*.
 
 ----
-:+1: A *Cluster* configuration can have many options ; but in this training, we'll setup a simple configuration; setting:
+:+1: A *Cluster* configuration can have many options ; but in this training, we'll setup a simple configuration, giving:
 * the *contact points* (list of cassandra node the driver can contact as *coordinators*). In our simple case, there is just one node: **"localhost"**
 * the connection port: 9142
 * the support of java.util.LocalDate type:
@@ -135,7 +135,9 @@ _We are now to implement a simple quering repository method using **session.exec
 
 Implement *TemperatureRepository.getAll()*, expecting to return every temperature in table *temperature_by_city*.
 
+----
 :+1: The simplest way to execute a simple CQL query with DataStax driver, is to use  **session.execute(*<CQL query as string>*)**. 
+----
 
 *After that, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your *implementation !*
 
