@@ -171,6 +171,9 @@ Implement now the method *getByCityAndDate()*, finding a temparature by city and
 
 _The Datastax driver provides some more advanced object mapping mecanism (as you could find with [Hibernate](https://hibernate.org/))._
 
+
+### toto pouet
+
 We'll experiment here the *cassandra mappers*, to implement (in a different way) **getByCityAndDate2(city)**.
 
 First, add in the [pom.xml](pom.xml) a dependency to *cassandra-driver-mapping*, to get access to **com.datastax.driver.mapping.Mapper<T>** class: 
@@ -182,9 +185,6 @@ First, add in the [pom.xml](pom.xml) a dependency to *cassandra-driver-mapping*,
             <version>3.3.0</version>
         </dependency>
 ```
-
-### toto pouet
-
 Then, you can use an instance of **Mapper<Temperature>** in **TemeratureRepository** to automaticly apply CRUD operations in *temperature_by_city*, and map ResultSet to your **Temperature** type ! 
 * First, annotate the *Temperature* class de define the object / table mapping:
 ```
