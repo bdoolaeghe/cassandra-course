@@ -169,10 +169,10 @@ Implement now the method *getByCityAndDate()*, finding a temparature by city and
 
 ### implement *getByCityAndDate2()*
 
-_The Datastax driver provides some more advanced object mapping mecanism (as you could find with [Hibernate](https://hibernate.org/))._
-
 
 ### toto pouet
+
+_The Datastax driver provides some more advanced object mapping mecanism (as you could find with [Hibernate](https://hibernate.org/))._
 
 We'll experiment here the *cassandra mappers*, to implement (in a different way) **getByCityAndDate2(city)**.
 
