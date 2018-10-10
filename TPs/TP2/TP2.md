@@ -183,6 +183,8 @@ First, add in the [pom.xml](pom.xml) a dependency to *cassandra-driver-mapping*,
         </dependency>
 ```
 
+### toto pouet
+
 Then, you can use an instance of **Mapper<Temperature>** in **TemeratureRepository** to automaticly apply CRUD operations in *temperature_by_city*, and map ResultSet to your **Temperature** type ! 
 * First, annotate the *Temperature* class de define the object / table mapping:
 ```
@@ -211,8 +213,6 @@ public class Temperature {
     }
 ```
 After that, you can use method *mapper.get(...)* to load a temperature by city and date, and map result to *Temperature* instance !
-
-### toto pouet
 
 *Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature2 *for testing !*
 
