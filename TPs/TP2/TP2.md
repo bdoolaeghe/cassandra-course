@@ -2,6 +2,7 @@
 
 TP2 - Train with the java Datastax driver
 =========================================
+ * [Import project](#import-project)
  * [Setup a SessionProvider](#setup-a-sessionprovider)
  * [Implement simple Repository](#implement-simple-repository)
    * [Implement <em>getAll()</em>](#implement-getall)
@@ -10,6 +11,10 @@ TP2 - Train with the java Datastax driver
    * [implement <em>getByCityAndDate2()</em>](#implement-getbycityanddate2)
    * [implement <em>getLastByCity()</em>](#implement-getlastbycity)
 
+
+- - - -
+Import project
+--------------
 Clone this git repository (if not done yet), checkout branch *booster_camp* and import TP2 Maven project in your favorite IDE. 
 
 *Nota: the project depends on [lombok](https://projectlombok.org/). You may have to install lombok plugin in your IDE to build successfully the cassandra-course TP:*
