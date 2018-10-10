@@ -166,8 +166,6 @@ Implement now the method *getByCityAndDate()*, finding a temparature by city and
 
 *Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature *for testing !*
 
-### implement *getByCityAndDate2() bzut*
-
 
 ### implement *getByCityAndDate2()*
 
@@ -215,6 +213,8 @@ After that, you can use method *mapper.get(...)* to load a temperature by city a
 
 *Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature2 *for testing !*
 
+
+### implement *getByCityAndDate2() bzut*
 
 ### Implement getLastByCity()
 
