@@ -47,6 +47,7 @@ As you will see in *TemperatureRepositoryTest* test class,  we will start an emb
     }
 ```
 
+- - - -
 Setup a SessionProvider
 -----------------------
 _First, we need to setup a **SessionProvider**, that will provide us a *Session* object, to connect and query the Cassandra clsuter._
@@ -79,6 +80,7 @@ Once *createCluster()* has been implemented, we'll be able to get a *Session* ob
 ```
 
 
+- - - -
 Implement simple Repository
 ---------------------------
 *The goal of this part is to use the DataStax driver to write the [TemperatureRepository](src/main/java/fr/soat/cassandra/course1/repository/TemperatureRepository.java) 5 methods, demonstrating the different way we can execute cassandra queries:*
@@ -130,6 +132,8 @@ To check our implementation is fine, we'll use the already written test class [T
 
 Enough talk ! It's now time to implement the repository...
 
+
+- - - -
 ### Implement *getAll()*
 _We are now to implement a simple quering repository method using **session.execute(String cql)**_
 
@@ -142,6 +146,8 @@ Implement *TemperatureRepository.getAll()*, expecting to return every temperatur
 
 *After that, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures *to test your implementation !*
 
+
+- - - -
 ###  Implement *save(temperature)*
 _The goal here is to train with **PreparedStatment** and **BoundStatment**_
 
@@ -154,6 +160,8 @@ Implement *TemperatureRepository.save(temperature)*, expecting to save in table 
 
 *Use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_save_a_single_temperature *to test your implementation !*
 
+
+- - - -
 ### implement *getByCityAndDate()*
 _We will here use the **QueryBuilder** to build cassandra queries._
 
@@ -167,6 +175,7 @@ Implement now the method *getByCityAndDate()*, finding a temparature by city and
 *Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature *for testing !*
 
 
+- - - -
 ### implement *getByCityAndDate2()*
 
 _The Datastax driver provides some more advanced object mapping mecanism (as you could find with [Hibernate](https://hibernate.org/))._
