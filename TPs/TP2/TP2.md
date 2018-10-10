@@ -95,14 +95,14 @@ Implement simple Repository
         throw new RuntimeException("implement me !");
     }
 
-    public List<Temperature> getByCity(String city) {
+
+    public Temperature getByCityAndDate2(String city, LocalDate date) {
         throw new RuntimeException("implement me !");
     }
 
     public Temperature getLastByCity(String city) {
         throw new RuntimeException("implement me !");
     }
-
 
 ```
 
@@ -137,7 +137,7 @@ Implement *TemperatureRepository.getAll()*, expecting to return every temperatur
 
 :+1: The simplest way to execute a simple CQL query with DataStax driver, is to use  **session.execute(*<CQL query as string>*)**. 
 
-After that, use  *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your implementation !
+*After that, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your *implementation !*
 
 ###  Implement *save(temperature)*
 _The goal here is to train with **PreparedStatment** and **BoundStatment**_
@@ -146,7 +146,7 @@ Implement *TemperatureRepository.save(temperature)*, expecting to save in table 
 
 :+1: To execute the save, we will use a [PreparedStatement](https://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/PreparedStatement.html). Datastax PreparedStatement are very similar to JDBC PreapredSTatement. You can use it to prepare a parametered stetement, and then bind some parameters to values. Follow the [DataStax PreparedStatement documentation](https://docs.datastax.com/en/developer/java-driver/3.0/manual/statements/prepared/) to implement the *save(temperature)* method.
 
-Use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_save_a_single_temperature* to test your implementation !
+*Use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_save_a_single_temperature *to test your implementation !*
 
 ### implement *getByCityAndDate()*
 _We will here use the **QueryBuilder** to build cassandra queries._
@@ -155,7 +155,7 @@ Implement now the method *getByCityAndDate()*, finding a temparature by city and
 
 :+1: we could use here a [PreparedStatement](https://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/PreparedStatement.html) also. But, another way to execute *dynamic* queries is to Use DataStax [QueryBuilder](https://docs.datastax.com/en/drivers/java/2.0/com/datastax/driver/core/querybuilder/QueryBuilder.html) API. You can follow an [exisintg exemple](https://docs.datastax.com/en/developer/java-driver/3.6/manual/statements/built/#specifying-conditions) to write your own for *getByCityAndDate()*.
 
-Once your implementation is over, use *fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature* for testing !
+*Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature *for testing !*
 
 
 ### Implement getByCity()
@@ -232,7 +232,8 @@ In **TemperatrureRepository**, You can then create an accessor of type **Tempera
     }
 
     public Temperature getLastByCity(String city) {
-        return this.accessor...
+        // return this.accessor.get..
     }
+```
 
-
+*Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_last_temperature_in_a_city *for testing !*
