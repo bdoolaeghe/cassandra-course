@@ -30,5 +30,3 @@ cqlsh:my_keyspace_rf2> SELECT count(*) from temperature_by_city ;
 ```
 Any change ?
 
-[>> Next (TP3.4_fail_over.md)](TP3.4_fail_over.md)
-
