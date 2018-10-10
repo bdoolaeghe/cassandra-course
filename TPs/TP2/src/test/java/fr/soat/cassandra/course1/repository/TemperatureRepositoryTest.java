@@ -7,7 +7,6 @@ import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
-import org.hamcrest.core.Is;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -15,7 +14,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -28,6 +26,7 @@ public class TemperatureRepositoryTest {
     public static final String KEYSPACE = "my_keyspace";
 
     private final LocalDate firstJanuary = LocalDate.of(2017,1,1);
+    private final LocalDate secondJanuary = LocalDate.of(2017,1,2);
 
     private static TemperatureRepository repository;
 
@@ -75,7 +74,7 @@ public class TemperatureRepositoryTest {
     }
 
     @Test
-        public void should_be_able_to_load_a_single_temperature() throws Exception {
+    public void should_be_able_to_load_a_single_temperature() throws Exception {
         // Given some sample temperatures are present in temperature_by_city
         new CQLDataLoader(session).load(new ClassPathCQLDataSet("cql/insert_temperatures.cql", false));
 
@@ -100,5 +99,32 @@ public class TemperatureRepositoryTest {
         int temperaturesInDb = session.execute("SELECT * FROM temperature_by_city").all().size();
         assertEquals(1, temperaturesInDb);
     }
+
+    @Test
+    public void should_be_able_to_load_a_single_temperature2() throws Exception {
+        // Given some sample temperatures are present in temperature_by_city
+        new CQLDataLoader(session).load(new ClassPathCQLDataSet("cql/insert_temperatures.cql", false));
+
+        // When I load by city and date
+        Temperature loadedTemperature = repository.getByCityAndDate2("paris", firstJanuary);
+
+        // Then
+        Temperature expectedTemperature = Temperature.builder().city("paris").date(firstJanuary).temperature(1.1f).build();
+        assertEquals(expectedTemperature, loadedTemperature);
+    }
+
+    @Test
+    public void should_be_able_to_load_last_temperature_in_a_city() throws Exception {
+        // Given some sample temperatures are present in temperature_by_city
+        new CQLDataLoader(session).load(new ClassPathCQLDataSet("cql/insert_temperatures.cql", false));
+
+        // When I load the last temperature in paris
+        Temperature lastFoundParisTemperature = repository.getLastByCity("paris");
+
+        // Then
+        Temperature expectedTemperature = Temperature.builder().city("paris").date(secondJanuary).temperature(2.2f).build();
+        assertEquals(expectedTemperature, lastFoundParisTemperature);
+    }
+
 
 }

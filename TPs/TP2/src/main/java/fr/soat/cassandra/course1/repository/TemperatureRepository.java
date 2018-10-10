@@ -1,6 +1,8 @@
 package fr.soat.cassandra.course1.repository;
 
 import com.datastax.driver.core.*;
+import com.datastax.driver.mapping.Mapper;
+import com.datastax.driver.mapping.MappingManager;
 import fr.soat.cassandra.course1.model.Temperature;
 
 import java.time.LocalDate;
@@ -14,10 +16,16 @@ public class TemperatureRepository {
 
     private final Session session;
     private final PreparedStatement savePreparedStatment;
+    private final TemperatureAccessor accessor;
+    private Mapper<Temperature> mapper;
+
 
     public TemperatureRepository(Session session) {
         this.session = session;
         this.savePreparedStatment = session.prepare("INSERT INTO temperature_by_city (city, date, temperature) VALUES (:city, :date, :temperature)");
+        MappingManager mappingManager = new MappingManager(session);
+        this.mapper = mappingManager.mapper(Temperature.class);
+        this.accessor = mappingManager.createAccessor(TemperatureAccessor.class);
     }
 
     /**
@@ -51,6 +59,14 @@ public class TemperatureRepository {
                 .and(eq("date", date));
         ResultSet rows = session.execute(stmt);
         return toModel(rows.one());
+    }
+
+    public Temperature getByCityAndDate2(String city, LocalDate date) {
+        return mapper.get(city, date);
+    }
+
+    public Temperature getLastByCity(String city) {
+        return accessor.getLastByCity(city);
     }
 
     private Temperature toModel(Row row) {
