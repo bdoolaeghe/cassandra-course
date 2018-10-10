@@ -167,11 +167,11 @@ Implement now the method *getByCityAndDate()*, finding a temparature by city and
 *Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature *for testing !*
 
 
-### Implement getByCity()
+### implement *getByCityAndDate2()*
 
 _The Datastax driver provides some more advanced object mapping mecanism (as you could find with [Hibernate](https://hibernate.org/))._
 
-We'll experiment here the *cassandra mappers*, to implement **getByCity(city)**.
+We'll experiment here the *cassandra mappers*, to implement (in a different way) **getByCityAndDate2(city)**.
 
 First, add in the [pom.xml](pom.xml) a dependency to *cassandra-driver-mapping*, to get access to **com.datastax.driver.mapping.Mapper<T>** class: 
 
