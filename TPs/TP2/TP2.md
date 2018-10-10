@@ -4,11 +4,11 @@ TP2 - Train with the java Datastax driver
 =========================================
  * [Setup a SessionProvider](#setup-a-sessionprovider)
  * [Implement simple Repository](#implement-simple-repository)
-  * [Implement <em>getAll()</em>](#implement-getall)
-  * [Implement <em>save(temperature)</em>](#implement-savetemperature)
-  * [implement <em>getByCityAndDate()</em>](#implement-getbycityanddate)
-  * [implement <em>getByCityAndDate2()</em>](#implement-getbycityanddate2)
-  * [implement <em>getLastByCity()</em>](#implement-getlastbycity)
+   * [Implement <em>getAll()</em>](#implement-getall)
+   * [Implement <em>save(temperature)</em>](#implement-savetemperature)
+   * [implement <em>getByCityAndDate()</em>](#implement-getbycityanddate)
+   * [implement <em>getByCityAndDate2()</em>](#implement-getbycityanddate2)
+   * [implement <em>getLastByCity()</em>](#implement-getlastbycity)
 
 Clone this git repository (if not done yet), checkout branch *booster_camp* and import TP2 Maven project in your favorite IDE. 
 
