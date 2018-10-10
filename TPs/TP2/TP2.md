@@ -213,6 +213,7 @@ After that, you can use method *mapper.get(...)* to load a temperature by city a
 
 *Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature2 *for testing !*
 
+* * * *
 
 ### implement *getLastByCity()*
 
