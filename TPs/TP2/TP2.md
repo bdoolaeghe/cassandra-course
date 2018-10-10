@@ -137,6 +137,7 @@ Implement *TemperatureRepository.getAll()*, expecting to return every temperatur
 
 ----
 :+1: The simplest way to execute a simple CQL query with DataStax driver, is to use  **session.execute(*<CQL query as string>*)**. 
+
 ----
 
 *After that, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your *implementation !*
