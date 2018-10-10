@@ -216,8 +216,6 @@ After that, you can use method *mapper.get(...)* to load a temperature by city a
 
 ### implement *getLastByCity()*
 
-### Implement getLastByCity()
-
 _We will here use the Datastax **Accessor** type to build custom cassandra queries (not available in *Mapper*), but still use automatic resultset / object mapping._
 
 To implement **getLastByCity(city)**, we will use the custom CQL query:
