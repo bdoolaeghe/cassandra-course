@@ -140,14 +140,17 @@ Implement *TemperatureRepository.getAll()*, expecting to return every temperatur
 
 ----
 
-*After that, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures* to test your *implementation !*
+*After that, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_all_temperatures *to test your implementation !*
 
 ###  Implement *save(temperature)*
 _The goal here is to train with **PreparedStatment** and **BoundStatment**_
 
 Implement *TemperatureRepository.save(temperature)*, expecting to save in table *temperature_by_city* a single temperature in a city at a given date.
 
+----
 :+1: To execute the save, we will use a [PreparedStatement](https://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/PreparedStatement.html). Datastax PreparedStatement are very similar to JDBC PreapredSTatement. You can use it to prepare a parametered stetement, and then bind some parameters to values. Follow the [DataStax PreparedStatement documentation](https://docs.datastax.com/en/developer/java-driver/3.0/manual/statements/prepared/) to implement the *save(temperature)* method.
+
+----
 
 *Use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_save_a_single_temperature *to test your implementation !*
 
