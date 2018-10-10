@@ -212,8 +212,42 @@ public class Temperature {
 ```
 After that, you can use method *mapper.get(...)* to load a temperature by city and date, and map result to *Temperature* instance !
 
+### toto pouet
+
 *Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_a_single_temperature2 *for testing !*
 
 
 ### Implement getLastByCity()
 
+_We will here use the Datastax **Accessor** type to build custom cassandra queries (not available in *Mapper*), but still use automatic resultset / object mapping._
+
+To implement **getLastByCity(city)**, we will use the custom CQL query:
+```
+SELECT * FROM temperature_by_city WHERE city = :city LIMIT 1;
+```
+Create a **TemperatureAccessor** inteface, annotated with **@Accessor**. In this interface, you can declare a **getLastByCity()** method, annotated with a corresponding query:
+```
+@Accessor
+public interface TemperatureAccessor {
+
+    @Query("SELECT * FROM temperature_by_city WHERE city = :city LIMIT 1")
+    Temperature getLastByCity(@Param("city") String city);
+
+}
+```
+In **TemperatrureRepository**, You can then create an accessor of type **TemperatureAccessor**, to execute the custom query:
+```
+    private TemperatureAccessor accessor;
+
+    public TemperatureByCityRepository(Session session) {
+        ...
+        MappingManager mappingManager = new MappingManager(session);
+	this.accessor = mappingManager.createAccessor(TemperatureByCityAccessor.class);
+    }
+
+    public Temperature getLastByCity(String city) {
+        // return this.accessor.get..
+    }
+```
+
+*Once your implementation is over, use* fr.soat.cassandra.course1.repository.TemperatureRepositoryTest#should_be_able_to_load_last_temperature_in_a_city *for testing !*
